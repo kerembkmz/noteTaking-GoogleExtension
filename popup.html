@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>A New Way Of Note Taking</title>
+
+    <style>
+        body {
+            width: 300px;
+            min-height: 200px;
+            padding: 10px;
+        }
+        
+        .url-list {
+            list-style-type: none;
+            padding: 0;
+            max-height: 250px;
+            overflow-y: auto;
+        }
+        
+        .url-list-item {
+            margin-bottom: 5px;
+        }
+    </style>
+
+    <script src="popup.js"></script>
+</head>
+
+<body>
+    <h1>Saved Urls</h1>
+    <button id="save-button">Save Current URL</button>
+    <ul class="url-list" id="url-container">
+
+    </ul>
+</body>
+
+</html>

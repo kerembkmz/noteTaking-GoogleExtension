@@ -1,0 +1,11 @@
+{
+    "manifest_version": 3,
+    "name": "URL Notes Extension",
+    "version": "1.0",
+    "description": "Save URLs and notes for easy access.",
+    "permissions": ["activeTab", "storage"],
+    "action": {
+        "default_popup": "popup.html"
+    }
+
+}
