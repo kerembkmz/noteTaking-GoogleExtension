@@ -12,7 +12,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
             chrome.storage.sync.get({ savedUrls: [] }, function(result) {
                 const savedUrls = result.savedUrls;
-                savedUrls.push(currentUrl);
+                savedUrls.push({
+                    url: currentUrl,
+                    note: '' // Initialize an empty note
+                });
 
                 chrome.storage.sync.set({ savedUrls: savedUrls }, function() {
                     urlContainer.innerHTML = '';
@@ -26,14 +29,34 @@ document.addEventListener('DOMContentLoaded', function() {
         chrome.storage.sync.get({ savedUrls: [] }, function(result) {
             const savedUrls = result.savedUrls;
 
-            savedUrls.forEach(function(url, index) {
+            savedUrls.forEach(function(data, index) {
                 const listItem = document.createElement('li');
                 listItem.classList.add('url-list-item');
 
                 const urlLink = document.createElement('a');
-                urlLink.href = url;
+                urlLink.href = data.url;
                 urlLink.target = '_blank';
-                urlLink.textContent = url;
+                urlLink.textContent = data.url;
+
+                const noteIcon = document.createElement('span');
+                noteIcon.className = 'note-icon';
+                noteIcon.textContent = 'Notes';
+                noteIcon.addEventListener('click', function() {
+                    toggleNoteSection(index);
+                });
+
+                const noteSection = document.createElement('div');
+                noteSection.className = 'note-section';
+                noteSection.style.display = 'none';
+
+                const noteTextarea = document.createElement('textarea');
+                noteTextarea.rows = '4';
+                noteTextarea.cols = '20';
+                noteTextarea.value = data.note; // Set the note content
+                noteTextarea.addEventListener('input', function() {
+                    savedUrls[index].note = noteTextarea.value;
+                    chrome.storage.sync.set({ savedUrls: savedUrls });
+                });
 
                 const deleteButton = document.createElement('button');
                 deleteButton.textContent = 'Delete';
@@ -46,10 +69,19 @@ document.addEventListener('DOMContentLoaded', function() {
                 });
 
                 listItem.appendChild(urlLink);
+                listItem.appendChild(noteIcon);
+                listItem.appendChild(noteSection);
+                noteSection.appendChild(noteTextarea);
                 listItem.appendChild(deleteButton);
 
                 urlContainer.appendChild(listItem);
             });
         });
+    }
+
+    function toggleNoteSection(index) {
+        const noteSections = document.querySelectorAll('.note-section');
+        const noteSection = noteSections[index];
+        noteSection.style.display = noteSection.style.display === 'none' ? 'block' : 'none';
     }
 });
