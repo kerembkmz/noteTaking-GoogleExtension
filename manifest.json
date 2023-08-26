@@ -6,6 +6,9 @@
     "permissions": ["activeTab", "storage"],
     "action": {
         "default_popup": "popup.html"
+    },
+    "icons": {
+        "48": "Images/icons48.png",
+        "128": "Images/icon128.png"
     }
-
 }
